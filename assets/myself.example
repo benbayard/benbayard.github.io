@@ -1,0 +1,7 @@
+<Person
+  name="Ben Bayard"
+  birthPlace="Bay Area"
+  yearsExperience={9}
+  yearsSenior={3}
+  proficiencies={["Front End", "React", "Javascript", "Angular"]}
+/>
