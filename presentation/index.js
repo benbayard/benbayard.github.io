@@ -49,10 +49,10 @@ const images = {
 };
 
 const videos = {
-  brian: require("../assets/brian.mp4")
+  brian: require("../assets/brian.mp4"),
+  liam: require("../assets/liam.mp4")
 };
 
-console.log(videos.brian);
 
 preloader(images);
 
@@ -235,6 +235,17 @@ export default class Presentation extends React.Component {
               Brian From Genentech
             </Heading>
           </Slide>
+          <Slide transition={["slide", "spin"]} bgColor="tertiary" notes={
+            `<div style="max-width: 100%">I worked with Brian over the course of a few months mentoring him
+            and his team. Together we worked on the cure for cancer and
+            built an amazing AngularJS website and delivered more than asked
+            for ahead of schedule.</div>`
+          }>
+            <Video videoSrc={videos.liam} />
+            <Heading caps fit size={1} textColor="primary">
+              Liam From Mule Design
+            </Heading>
+          </Slide>
           <Slide transition={["slide"]} bgColor="primary">
             <Heading size={1} caps fit textColor="tertiary">
               In summary
@@ -295,6 +306,17 @@ export default class Presentation extends React.Component {
           `}>
             <Heading size={1} caps fit lineHeight={1.5} textColor="tertiary">
               Open Source Work.
+            </Heading>
+          </Slide>
+          <Slide transition={["slide"]} bgColor="primary" notes={`
+            <ul>
+              <li>Getting on the front page of Hacker News</li>
+              <li>Gives engineers on the bench something to do</li>
+              <li>Helps our developers learn about new tech.</li>
+            </ul>
+          `}>
+            <Heading size={1} caps fit lineHeight={1.5} textColor="tertiary">
+              Speak and Attend developer conferences.
             </Heading>
           </Slide>
         </Deck>
