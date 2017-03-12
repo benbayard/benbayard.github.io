@@ -84,6 +84,14 @@ button {
   cursor: pointer;
 }
 
+.loading {
+  color: white;
+  display: block;
+  width: 100vw;
+  font-weight: 200;
+  text-align: center;
+}
+
 #modal {
   display: none;
   position: fixed;

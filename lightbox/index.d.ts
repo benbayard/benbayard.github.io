@@ -134,7 +134,7 @@ declare namespace ImageFactory {
     const didClick: (index: number) => () => void;
     const create: ({url}: API.Image, index: number, openModal?: boolean) => Element;
 }
-declare namespace Render {
+declare namespace GridFactory {
     /**
      * Based on the selected service update the view
      * with the correct API.

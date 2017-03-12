@@ -290,8 +290,8 @@ var ImageFactory;
 /// <reference path="./service_selector.ts" />
 /// <reference path="./image_factory.ts" />
 "use strict";
-var Render;
-(function (Render) {
+var GridFactory;
+(function (GridFactory) {
     /**
      * Based on the selected service update the view
      * with the correct API.
@@ -300,10 +300,11 @@ var Render;
     function fromServiceSelector() {
         return __awaiter(this, void 0, void 0, function* () {
             const root = Mount.getRoot();
-            const images = yield API.get(ServiceSelector.currentService);
             /*
-             * Empty the container
+             * Show Loading message
              */
+            root.innerHTML = "<h1 class=\"loading\">Loading...</h1>";
+            const images = yield API.get(ServiceSelector.currentService);
             root.innerHTML = "";
             images.forEach((imageData, index) => {
                 const wrapper = document.createElement("div");
@@ -314,11 +315,11 @@ var Render;
             });
         });
     }
-    Render.fromServiceSelector = fromServiceSelector;
-})(Render || (Render = {}));
+    GridFactory.fromServiceSelector = fromServiceSelector;
+})(GridFactory || (GridFactory = {}));
 /// <reference path="./mount.ts" />
 /// <reference path="./api.ts" />
-/// <reference path="./render.ts" />
+/// <reference path="./grid_factory.ts" />
 "use strict";
 var ServiceSelector;
 (function (ServiceSelector) {
@@ -345,14 +346,14 @@ var ServiceSelector;
         });
         selector.onchange = (event) => {
             ServiceSelector.currentService = parseInt(event.target.value, 10);
-            Render.fromServiceSelector();
+            GridFactory.fromServiceSelector();
         };
     };
 })(ServiceSelector || (ServiceSelector = {}));
 /// <reference path="./src/mount.ts" />
 /// <reference path="./src/api.ts" />
 /// <reference path="./src/service_selector.ts" />
-/// <reference path="./src/render.ts" />
+/// <reference path="./src/grid_factory.ts" />
 "use strict";
 /**
  * First we will start by locating our mounting node
@@ -360,4 +361,4 @@ var ServiceSelector;
  */
 const root = Mount.getRoot();
 ServiceSelector.init();
-Render.fromServiceSelector();
+GridFactory.fromServiceSelector();
