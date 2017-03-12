@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lightbox Example</title>
+  <style media="screen">
+    :root {
+      --header-height: 60px;
+      --spacing: 15px;
+      --image-background: #222;
+      --body-width: 800px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      padding: 0;
+      margin: 0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      font-weight: 200;
+      background: var(--image-background);
+    }
+    img {
+      width: 100%;
+      display: inline-block;
+      vertical-align: top;
+    }
+    .primary-header {
+      display: flex;
+      align-items: center;
+      height: var(--header-height);
+      padding: var(--spacing);
+      background: crimson;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+    }
+
+    .title {
+      flex: 1;
+      font-weight: inherit;
+      font-size: 1.4rem;
+    }
+
+    .main {
+      width: 90vw;
+      max-width: var(--body-width);
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: var(--header-height);
+    }
+
+    #root {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: flex-start;
+      margin-left: calc(-1 * var(--spacing));
+      margin-right: calc(-1 * var(--spacing));
+    }
+
+    .image {
+      flex: 1 1 25%;
+      min-width: 150px;
+      padding: calc(var(--spacing) / 2);
+    }
+
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0;
+    }
+
+    #modal.active {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, .35);
+    }
+
+    .modal-content {
+      background-color: white;
+      width: 80vw;
+      max-width: var(--body-width);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate3d(-50%, -50%, 0);
+      height: 150px;
+      overflow-x: hidden;
+    }
+
+    .modal-image-container {
+      transition: all .35s ease-in-out;
+    }
+
+    button {
+      outline: none;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .close, .next, .previous {
+      -webkit-appearance: none;
+      border: none;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    .next, .previous {
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: transparent;
+      color: white;
+      text-outline: black 1px 1px;
+    }
+
+    .next:after, .previous:after {
+      width: 0;
+      content: '';
+      border-width: 15px;
+      border-color: transparent;
+      border-style: solid;
+      display: block;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .previous:after {
+      border-right-color: crimson;
+      left: 15px;
+    }
+
+    .next:after {
+      border-left-color: crimson;
+      right: 15px;
+    }
+
+    .previous {
+      left: 0;
+      right: 50%;
+    }
+
+    .next {
+      right: 0;
+      left: 50%;
+    }
+
+    .close {
+      right: 15px;
+      top: 15px;
+      background: crimson;
+      color: white;
+      font-size: 1.2em;
+      border-radius: 5px;
+      padding: 5px 15px;
+      border: 1px solid white;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="primary-header">
+    <h1 class="title">Lightbox Example</h1>
+    <select id="service"></select>
+  </header>
+  <main class="main">
+    <section id="root" />
+  </main>
+  <aside id="modal"></aside>
+  <script type="application/javascript" src="./index.js"></script>
+</body>
+</html>
