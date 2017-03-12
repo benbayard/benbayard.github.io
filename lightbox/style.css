@@ -108,6 +108,9 @@ button {
   width: 100vw;
   font-weight: 200;
   text-align: center;
+  position: absolute;
+  left: 0;
+
 }
 
 #modal {

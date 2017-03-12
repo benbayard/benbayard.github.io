@@ -119,7 +119,7 @@ var API;
     }
     API.get = get;
 })(API || (API = {}));
-/// <reference path="./api.ts" />
+/// <reference path="../api.ts" />
 "use strict";
 var ModalUtils;
 (function (ModalUtils) {
@@ -169,7 +169,7 @@ var ModalUtils;
     ModalUtils.isFirst = () => ModalUtils.activeImage === 0;
 })(ModalUtils || (ModalUtils = {}));
 "use strict";
-/// <reference path="./modal_utils.ts" />
+/// <reference path="../utils/modal_utils.ts" />
 var ButtonFactory;
 (function (ButtonFactory) {
     ButtonFactory.create = () => {
@@ -218,11 +218,11 @@ var ButtonFactory;
         ModalUtils.setImageContainerStyle(imageContainer, innerContent);
     };
 })(ButtonFactory || (ButtonFactory = {}));
-/// <reference path="./mount.ts" />
-/// <reference path="./api.ts" />
+/// <reference path="../mount.ts" />
+/// <reference path="../api.ts" />
 /// <reference path="./image_factory.ts" />
 /// <reference path="./button_factory.ts" />
-/// <reference path="./modal_utils.ts" />
+/// <reference path="../utils/modal_utils.ts" />
 "use strict";
 var ModalFactory;
 (function (ModalFactory) {
@@ -268,7 +268,7 @@ var ModalFactory;
     };
 })(ModalFactory || (ModalFactory = {}));
 "use strict";
-/// <reference path="./config/api_image.ts" />
+/// <reference path="../config/api_image.ts" />
 /// <reference path="./modal_factory.ts" />
 var ImageFactory;
 (function (ImageFactory) {
@@ -286,8 +286,8 @@ var ImageFactory;
         return image;
     };
 })(ImageFactory || (ImageFactory = {}));
-/// <reference path="./mount.ts" />
-/// <reference path="./service_selector.ts" />
+/// <reference path="../mount.ts" />
+/// <reference path="../service_selector.ts" />
 /// <reference path="./image_factory.ts" />
 "use strict";
 var GridFactory;
@@ -319,7 +319,7 @@ var GridFactory;
 })(GridFactory || (GridFactory = {}));
 /// <reference path="./mount.ts" />
 /// <reference path="./api.ts" />
-/// <reference path="./grid_factory.ts" />
+/// <reference path="./factories/grid_factory.ts" />
 "use strict";
 var ServiceSelector;
 (function (ServiceSelector) {
@@ -353,7 +353,7 @@ var ServiceSelector;
 /// <reference path="./src/mount.ts" />
 /// <reference path="./src/api.ts" />
 /// <reference path="./src/service_selector.ts" />
-/// <reference path="./src/grid_factory.ts" />
+/// <reference path="./src/factories/grid_factory.ts" />
 "use strict";
 /**
  * First we will start by locating our mounting node
