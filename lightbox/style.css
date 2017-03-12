@@ -2,7 +2,7 @@
   --header-height: 60px;
   --spacing: 15px;
   --image-background: #222;
-  --body-width: 800px;
+  --body-width: 1100px;
   --body-font-size: 16px;
   --primary-color: crimson;
   --secondary-color: white;
@@ -53,10 +53,11 @@ button {
   margin-top: calc(var(--header-height) + var(--spacing));
 }
 
-#root {
+#root-lightbox {
   column-gap: calc(var(--spacing));
   margin-left: calc(-1 * var(--spacing));
   margin-right: calc(-1 * var(--spacing));
+  -moz-column-count: 4;
   column-count: 4;
 }
 
@@ -73,22 +74,26 @@ button {
 }
 
 @media (max-width: 1024px) {
-  #root {
-    column-count:         3;
+  #root-lightbox {
+    -moz-column-count: 3;
+    column-count: 3;
   }
 }
 @media (max-width: 768px) {
-  #root {
-    column-count:         2;
+  #root-lightbox {
+    -moz-column-count: 2;
+    column-count: 2;
   }
 }
 @media (max-width: 640px) {
-  #root {
-    column-count:         1;
+  #root-lightbox {
+    -moz-column-count: 1;
+    column-count: 1;
   }
 }
 
 .image {
+  width: 100%;
   margin-bottom: var(--spacing);
   display: inline-block;
 }

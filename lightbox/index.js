@@ -27,7 +27,7 @@ var Mount;
             return el;
         };
     };
-    Mount.getRoot = Mount.findByID("root", "Mounting");
+    Mount.getRoot = Mount.findByID("root-lightbox", "Mounting");
     Mount.getServiceSelector = Mount.findByID("service", "Service Selector");
     Mount.getModalContainer = Mount.findByID("modal", "ModalFactory");
 })(Mount || (Mount = {}));
