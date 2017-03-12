@@ -29,7 +29,7 @@ var Mount;
     };
     Mount.getRoot = Mount.findByID("root", "Mounting");
     Mount.getServiceSelector = Mount.findByID("service", "Service Selector");
-    Mount.getModalContainer = Mount.findByID("modal", "Modal");
+    Mount.getModalContainer = Mount.findByID("modal", "ModalFactory");
 })(Mount || (Mount = {}));
 "use strict";
 var API;
@@ -56,26 +56,15 @@ var Giphy;
         title: slug,
         url,
     })));
-    Giphy.fetchImages = () => {
-        return fetch(Giphy.URI())
-            .then(body => body.json())
-            .then(Giphy.cookDataFormat);
-    };
 })(Giphy || (Giphy = {}));
 "use strict";
 /// <reference path="./api_image.ts" />
 var Google;
 (function (Google) {
     Google.URI = (query = "Puppies", key = "AIzaSyBQk73LkIJBLB_O25Ro6q795ks8DWYQAOw", context = "001532126640155556502:f9o-ifgnlek") => `https://www.googleapis.com/customsearch/v1?q=${query}&key=${key}&cx=${context}&searchType=image&imgSize=xxlarge`;
-    ;
     Google.cookDataFormat = ({ items }) => (items.map(({ title, link }) => ({
         title, url: link,
     })));
-    Google.fetchImages = () => {
-        return fetch(Google.URI())
-            .then(body => body.json())
-            .then(Google.cookDataFormat);
-    };
 })(Google || (Google = {}));
 "use strict";
 /// <reference path="./api_image.ts" />
@@ -130,111 +119,162 @@ var API;
     }
     API.get = get;
 })(API || (API = {}));
-"use strict";
-/// <reference path="./mount.ts" />
 /// <reference path="./api.ts" />
-/// <reference path="./image_factory.ts" />
-var Modal;
-(function (Modal) {
-    const modalContentClassName = "modal-content";
-    const modalImageContainerClassName = "modal-image-container";
-    let activeImage;
+"use strict";
+var ModalUtils;
+(function (ModalUtils) {
+    ModalUtils.modalContentClassName = "modal-content";
+    ModalUtils.modalImageContainerClassName = "modal-image-container";
+    ModalUtils.modalImageClassName = "modal-image";
+    /**
+     * Calculate the width of all the images for the
+     * imageContainer
+     * @param clientWidth
+     * @param numImages
+     */
     const width = (clientWidth, numImages) => clientWidth * numImages;
+    /**
+     * Calculate the left transform
+     * for the carousel position.
+     * @param numImages
+     * @returns {string}
+     */
     const leftTransform = (numImages) => {
-        return `transform: translate3d(${activeImage / numImages * -100}%, 0, 0);`;
+        return `transform: translate3d(${ModalUtils.activeImage / numImages * -100}%, 0, 0);`;
     };
-    Modal.setImageContainerStyle = (imageContainer, innerContent) => {
-        const activeImageNode = document.querySelectorAll(".modal-image")[activeImage];
+    /**
+     * Update the innerContent
+     * with the calculated values
+     * @param imageContainer
+     * @param innerContent
+     */
+    ModalUtils.setImageContainerStyle = (imageContainer, innerContent) => {
+        const activeImageNode = document.querySelectorAll(`.${ModalUtils.modalImageClassName}`)[ModalUtils.activeImage];
         innerContent.setAttribute("style", `height: ${activeImageNode.clientHeight}px;`);
         imageContainer.setAttribute("style", `
       width: ${width(innerContent.clientWidth, API.images.length)}px;
       ${leftTransform(API.images.length)}
     `);
     };
-    Modal.isLast = () => activeImage === API.images.length - 1;
-    Modal.isFirst = () => activeImage === 0;
-    Modal.open = (id) => {
-        activeImage = id;
+    /**
+     * Update the height of the inner content
+     * for the new images.
+     * @param innerContent
+     * @param size
+     */
+    ModalUtils.updateInnerContainerSize = (innerContent, size) => {
+        innerContent.setAttribute("style", `height: ${size}px;`);
+    };
+    ModalUtils.isLast = () => ModalUtils.activeImage === API.images.length - 1;
+    ModalUtils.isFirst = () => ModalUtils.activeImage === 0;
+})(ModalUtils || (ModalUtils = {}));
+"use strict";
+/// <reference path="./modal_utils.ts" />
+var ButtonFactory;
+(function (ButtonFactory) {
+    ButtonFactory.create = () => {
+        const nextButton = document.createElement("button");
+        const previousButton = document.createElement("button");
+        nextButton.onclick = ButtonFactory.next;
+        previousButton.onclick = ButtonFactory.previous;
+        nextButton.classList.add("next");
+        if (ModalUtils.isLast()) {
+            nextButton.classList.add("hide");
+        }
+        previousButton.classList.add("previous");
+        if (ModalUtils.isFirst()) {
+            previousButton.classList.add("hide");
+        }
+        return { nextButton, previousButton };
+    };
+    ButtonFactory.next = () => {
+        const previousButton = document.querySelector(".previous");
+        previousButton.classList.remove("hide");
+        if (ModalUtils.isLast()) {
+            return;
+        }
+        ModalUtils.activeImage += 1;
+        if (ModalUtils.isLast()) {
+            const nextButton = document.querySelector(".next");
+            nextButton.classList.add("hide");
+        }
+        const innerContent = document.querySelector(`.${ModalUtils.modalContentClassName}`);
+        const imageContainer = document.querySelector(`.${ModalUtils.modalImageContainerClassName}`);
+        ModalUtils.setImageContainerStyle(imageContainer, innerContent);
+    };
+    ButtonFactory.previous = () => {
+        const nextButton = document.querySelector(".next");
+        nextButton.classList.remove("hide");
+        if (ModalUtils.isFirst()) {
+            return;
+        }
+        ModalUtils.activeImage -= 1;
+        if (ModalUtils.isFirst()) {
+            const previousButton = document.querySelector(".previous");
+            previousButton.classList.add("hide");
+        }
+        const innerContent = document.querySelectorAll(`.${ModalUtils.modalContentClassName}`)[0];
+        const imageContainer = document.querySelectorAll(`.${ModalUtils.modalImageContainerClassName}`)[0];
+        ModalUtils.setImageContainerStyle(imageContainer, innerContent);
+    };
+})(ButtonFactory || (ButtonFactory = {}));
+/// <reference path="./mount.ts" />
+/// <reference path="./api.ts" />
+/// <reference path="./image_factory.ts" />
+/// <reference path="./button_factory.ts" />
+/// <reference path="./modal_utils.ts" />
+"use strict";
+var ModalFactory;
+(function (ModalFactory) {
+    /**
+     * Activate the mobile
+     * and initializes the images.
+     * @param id
+     */
+    ModalFactory.open = (id) => {
+        ModalUtils.activeImage = id;
         const modal = Mount.getModalContainer();
         modal.innerHTML = "";
         modal.classList.add("active");
         const innerContent = document.createElement("section");
-        innerContent.classList.add(modalContentClassName);
+        innerContent.classList.add(ModalUtils.modalContentClassName);
         modal.appendChild(innerContent);
         const imageContainer = document.createElement("section");
         const imageNodes = API.images.map((img, index) => ImageFactory.create(img, index, false));
-        imageContainer.classList.add(modalImageContainerClassName);
+        imageContainer.classList.add(ModalUtils.modalImageContainerClassName);
         imageNodes.forEach((imgNode) => {
             imgNode.setAttribute("style", `width: ${innerContent.clientWidth}px;`);
-            imgNode.classList.add("modal-image");
+            imgNode.classList.add(ModalUtils.modalImageClassName);
             imageContainer.appendChild(imgNode);
         });
         innerContent.appendChild(imageContainer);
-        innerContent.setAttribute("style", `height: ${imageNodes[activeImage].clientHeight}px;`);
-        Modal.setImageContainerStyle(imageContainer, innerContent);
-        const closeButton = document.createElement("button");
-        closeButton.textContent = "CLOSE";
-        closeButton.classList.add("close");
-        closeButton.onclick = Modal.close;
-        modal.appendChild(closeButton);
-        const nextButton = document.createElement("button");
-        const previousButton = document.createElement("button");
-        nextButton.onclick = next;
-        previousButton.onclick = previous;
-        nextButton.classList.add("next");
-        if (Modal.isLast()) {
-            nextButton.classList.add("hide");
-        }
-        previousButton.classList.add("previous");
-        if (Modal.isFirst()) {
-            previousButton.classList.add("hide");
-        }
+        ModalUtils.updateInnerContainerSize(innerContent, imageNodes[ModalUtils.activeImage].clientHeight);
+        ModalUtils.setImageContainerStyle(imageContainer, innerContent);
+        const { nextButton, previousButton } = ButtonFactory.create();
         innerContent.appendChild(nextButton);
         innerContent.appendChild(previousButton);
+        const modalBackground = document.createElement("section");
+        modalBackground.innerHTML = "hi";
+        modalBackground.classList.add("modal-background");
+        modalBackground.onclick = ModalFactory.close;
+        modal.appendChild(modalBackground);
     };
-    const next = () => {
-        const previousButton = document.querySelector(".previous");
-        previousButton.classList.remove("hide");
-        if (Modal.isLast()) {
-            return;
-        }
-        activeImage += 1;
-        if (Modal.isLast()) {
-            const nextButton = document.querySelector(".next");
-            nextButton.classList.add("hide");
-        }
-        const innerContent = document.querySelector(`.${modalContentClassName}`);
-        const imageContainer = document.querySelector(`.${modalImageContainerClassName}`);
-        Modal.setImageContainerStyle(imageContainer, innerContent);
-    };
-    const previous = () => {
-        const nextButton = document.querySelector(".next");
-        nextButton.classList.remove("hide");
-        if (Modal.isFirst()) {
-            return;
-        }
-        activeImage -= 1;
-        if (Modal.isFirst()) {
-            const previousButton = document.querySelector(".previous");
-            previousButton.classList.add("hide");
-        }
-        const innerContent = document.querySelectorAll(`.${modalContentClassName}`)[0];
-        const imageContainer = document.querySelectorAll(`.${modalImageContainerClassName}`)[0];
-        Modal.setImageContainerStyle(imageContainer, innerContent);
-    };
-    Modal.close = () => {
+    /**
+     * Deactivate the modal.
+     */
+    ModalFactory.close = () => {
         const modal = Mount.getModalContainer();
         modal.classList.remove("active");
     };
-})(Modal || (Modal = {}));
+})(ModalFactory || (ModalFactory = {}));
 "use strict";
 /// <reference path="./config/api_image.ts" />
-/// <reference path="./modal.ts" />
+/// <reference path="./modal_factory.ts" />
 var ImageFactory;
 (function (ImageFactory) {
     ImageFactory.didClick = (index) => {
         return () => {
-            Modal.open(index);
+            ModalFactory.open(index);
         };
     };
     ImageFactory.create = ({ url }, index, openModal = true) => {
