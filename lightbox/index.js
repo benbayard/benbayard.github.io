@@ -144,6 +144,8 @@ var Modal;
         return `transform: translate3d(${activeImage / numImages * -100}%, 0, 0);`;
     };
     Modal.setImageContainerStyle = (imageContainer, innerContent) => {
+        const activeImageNode = document.querySelectorAll(".modal-image")[activeImage];
+        innerContent.setAttribute("style", `height: ${activeImageNode.clientHeight}px;`);
         imageContainer.setAttribute("style", `
       width: ${width(innerContent.clientWidth, API.images.length)}px;
       ${leftTransform(API.images.length)}
@@ -162,13 +164,14 @@ var Modal;
         const imageContainer = document.createElement("section");
         const imageNodes = API.images.map((img, index) => ImageFactory.create(img, index, false));
         imageContainer.classList.add(modalImageContainerClassName);
-        Modal.setImageContainerStyle(imageContainer, innerContent);
         imageNodes.forEach((imgNode) => {
             imgNode.setAttribute("style", `width: ${innerContent.clientWidth}px;`);
+            imgNode.classList.add("modal-image");
             imageContainer.appendChild(imgNode);
         });
         innerContent.appendChild(imageContainer);
         innerContent.setAttribute("style", `height: ${imageNodes[activeImage].clientHeight}px;`);
+        Modal.setImageContainerStyle(imageContainer, innerContent);
         const closeButton = document.createElement("button");
         closeButton.textContent = "CLOSE";
         closeButton.classList.add("close");
@@ -193,11 +196,13 @@ var Modal;
         const previousButton = document.querySelector(".previous");
         previousButton.classList.remove("hide");
         if (Modal.isLast()) {
-            const nextButton = document.querySelector(".next");
-            nextButton.classList.add("hide");
             return;
         }
         activeImage += 1;
+        if (Modal.isLast()) {
+            const nextButton = document.querySelector(".next");
+            nextButton.classList.add("hide");
+        }
         const innerContent = document.querySelector(`.${modalContentClassName}`);
         const imageContainer = document.querySelector(`.${modalImageContainerClassName}`);
         Modal.setImageContainerStyle(imageContainer, innerContent);
@@ -206,11 +211,13 @@ var Modal;
         const nextButton = document.querySelector(".next");
         nextButton.classList.remove("hide");
         if (Modal.isFirst()) {
-            const previousButton = document.querySelector(".previous");
-            previousButton.classList.add("hide");
             return;
         }
         activeImage -= 1;
+        if (Modal.isFirst()) {
+            const previousButton = document.querySelector(".previous");
+            previousButton.classList.add("hide");
+        }
         const innerContent = document.querySelectorAll(`.${modalContentClassName}`)[0];
         const imageContainer = document.querySelectorAll(`.${modalImageContainerClassName}`)[0];
         Modal.setImageContainerStyle(imageContainer, innerContent);
