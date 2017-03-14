@@ -175,9 +175,89 @@ function get(service) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(1);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return activeImage; });
+
+
+const modalContentClassName = "modal-content";
+/* harmony export (immutable) */ __webpack_exports__["c"] = modalContentClassName;
+
+const modalImageContainerClassName = "modal-image-container";
+/* harmony export (immutable) */ __webpack_exports__["d"] = modalImageContainerClassName;
+
+const modalImageClassName = "modal-image";
+/* harmony export (immutable) */ __webpack_exports__["a"] = modalImageClassName;
+
+let activeImage;
+
+const setActiveImage = (num) => activeImage = num;
+/* harmony export (immutable) */ __webpack_exports__["b"] = setActiveImage;
+
+
+/**
+ * Calculate the width of all the images for the
+ * imageContainer
+ * @param clientWidth
+ * @param numImages
+ */
+const width = (clientWidth, numImages) => clientWidth * numImages;
+
+/**
+ * Calculate the left transform
+ * for the carousel position.
+ * @param numImages
+ * @returns {string}
+ */
+const leftTransform = (numImages) => `transform: translate3d(${activeImage / numImages * -100}%, 0, 0);`;
+
+/**
+ * Update the innerContent
+ * with the calculated values
+ * @param imageContainer
+ * @param innerContent
+ */
+const setImageContainerStyle = (imageContainer, innerContent) => {
+  const activeImageNode = document.querySelectorAll(`.${modalImageClassName}`)[activeImage];
+
+  innerContent.setAttribute("style", `height: ${activeImageNode.clientHeight}px;`);
+
+  imageContainer.setAttribute("style", `
+    width: ${width(innerContent.clientWidth, __WEBPACK_IMPORTED_MODULE_0__api__["b" /* images */].length)}px;
+    ${leftTransform(__WEBPACK_IMPORTED_MODULE_0__api__["b" /* images */].length)}
+  `);
+};
+/* harmony export (immutable) */ __webpack_exports__["g"] = setImageContainerStyle;
+
+
+/**
+ * Update the height of the inner content
+ * for the new images.
+ * @param innerContent
+ * @param size
+ */
+const updateInnerContainerSize = (innerContent, size) => {
+  innerContent.setAttribute("style", `height: ${size}px;`);
+};
+/* harmony export (immutable) */ __webpack_exports__["e"] = updateInnerContainerSize;
+
+
+const isLast = () => activeImage === __WEBPACK_IMPORTED_MODULE_0__api__["b" /* images */].length - 1;
+/* harmony export (immutable) */ __webpack_exports__["h"] = isLast;
+
+
+const isFirst = () => activeImage === 0;
+/* harmony export (immutable) */ __webpack_exports__["i"] = isFirst;
+
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mount__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_selector__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__image_factory__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_selector__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__image_factory__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__api__ = __webpack_require__(1);
 /* harmony export (immutable) */ __webpack_exports__["a"] = fromServiceSelector;
 
@@ -210,13 +290,13 @@ function fromServiceSelector() {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mount__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__factories_grid_factory__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__factories_grid_factory__ = __webpack_require__(3);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return currentService; });
 
 
@@ -266,11 +346,17 @@ const init = () => {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__modal_factory__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_modal_utils__ = __webpack_require__(2);
+
+
+
+const imageClassName = "scalable-image";
+/* harmony export (immutable) */ __webpack_exports__["c"] = imageClassName;
 
 
 const didClick = (index) => () => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__modal_factory__["a" /* open */])(index);
@@ -279,7 +365,6 @@ const didClick = (index) => () => __webpack_require__.i(__WEBPACK_IMPORTED_MODUL
 
 const create = ({url}, index, openModal = true) => {
   const image = document.createElement("img");
-
   image.setAttribute("src", url);
   if (openModal) {
     image.onclick = didClick(index);
@@ -290,86 +375,23 @@ const create = ({url}, index, openModal = true) => {
 /* harmony export (immutable) */ __webpack_exports__["a"] = create;
 
 
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(1);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return activeImage; });
-
-
-const modalContentClassName = "modal-content";
-/* harmony export (immutable) */ __webpack_exports__["b"] = modalContentClassName;
-
-const modalImageContainerClassName = "modal-image-container";
-/* harmony export (immutable) */ __webpack_exports__["c"] = modalImageContainerClassName;
-
-const modalImageClassName = "modal-image";
-/* harmony export (immutable) */ __webpack_exports__["d"] = modalImageClassName;
-
-let activeImage;
-
-const setActiveImage = (num) => activeImage = num;
-/* harmony export (immutable) */ __webpack_exports__["a"] = setActiveImage;
-
-
-/**
- * Calculate the width of all the images for the
- * imageContainer
- * @param clientWidth
- * @param numImages
- */
-const width = (clientWidth, numImages) => clientWidth * numImages;
-
-/**
- * Calculate the left transform
- * for the carousel position.
- * @param numImages
- * @returns {string}
- */
-const leftTransform = (numImages) => `transform: translate3d(${activeImage / numImages * -100}%, 0, 0);`;
-
-/**
- * Update the innerContent
- * with the calculated values
- * @param imageContainer
- * @param innerContent
- */
-const setImageContainerStyle = (imageContainer, innerContent) => {
-    const activeImageNode = document.querySelectorAll(`.${modalImageClassName}`)[activeImage];
-
-    innerContent.setAttribute("style", `height: ${activeImageNode.clientHeight}px;`);
-
-    imageContainer.setAttribute("style", `
-    width: ${width(innerContent.clientWidth, __WEBPACK_IMPORTED_MODULE_0__api__["b" /* images */].length)}px;
-    ${leftTransform(__WEBPACK_IMPORTED_MODULE_0__api__["b" /* images */].length)}
-  `);
-
+const updateSize = (innerContent, imgNode) => {
+  imgNode.setAttribute("style", `width: ${innerContent.clientWidth}px;`);
 };
-/* harmony export (immutable) */ __webpack_exports__["g"] = setImageContainerStyle;
+/* harmony export (immutable) */ __webpack_exports__["d"] = updateSize;
 
 
-/**
- * Update the height of the inner content
- * for the new images.
- * @param innerContent
- * @param size
- */
-const updateInnerContainerSize = (innerContent, size) => {
-    innerContent.setAttribute("style", `height: ${size}px;`);
-
+const createAndAppendImages = (innerContent, imageContainer, images) => {
+  const imageNodes = images.map((img, index) => create(img, index, false));
+  imageNodes.forEach((imgNode) => {
+    imgNode.classList.add(imageClassName);
+    updateSize(innerContent, imgNode);
+    imgNode.classList.add(__WEBPACK_IMPORTED_MODULE_1__utils_modal_utils__["a" /* modalImageClassName */]);
+    imageContainer.appendChild(imgNode);
+  });
+  return imageNodes;
 };
-/* harmony export (immutable) */ __webpack_exports__["e"] = updateInnerContainerSize;
-
-
-const isLast = () => activeImage === __WEBPACK_IMPORTED_MODULE_0__api__["b" /* images */].length - 1;
-/* harmony export (immutable) */ __webpack_exports__["h"] = isLast;
-
-
-const isFirst = () => activeImage === 0;
-/* harmony export (immutable) */ __webpack_exports__["i"] = isFirst;
+/* harmony export (immutable) */ __webpack_exports__["b"] = createAndAppendImages;
 
 
 
@@ -930,7 +952,7 @@ const cookDataFormat = ({items}) =>
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__ = __webpack_require__(2);
 
 
 const create = () => {
@@ -962,15 +984,15 @@ const next = () => {
   if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["h" /* isLast */])()) {
     return;
   }
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["a" /* setActiveImage */])(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["f" /* activeImage */] + 1);
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["b" /* setActiveImage */])(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["f" /* activeImage */] + 1);
 
   if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["h" /* isLast */])()) {
     const nextButton = document.querySelector(".next");
 
     nextButton.classList.add("hide");
   }
-  const innerContent = document.querySelector(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["b" /* modalContentClassName */]}`);
-  const imageContainer = document.querySelector(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["c" /* modalImageContainerClassName */]}`);
+  const innerContent = document.querySelector(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["c" /* modalContentClassName */]}`);
+  const imageContainer = document.querySelector(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["d" /* modalImageContainerClassName */]}`);
 
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["g" /* setImageContainerStyle */])(imageContainer, innerContent);
 };
@@ -984,14 +1006,14 @@ const previous = () => {
   if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["i" /* isFirst */])()) {
     return;
   }
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["a" /* setActiveImage */])(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["f" /* activeImage */] - 1);
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["b" /* setActiveImage */])(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["f" /* activeImage */] - 1);
   if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["i" /* isFirst */])()) {
     const previousButton = document.querySelector(".previous");
 
     previousButton.classList.add("hide");
   }
-  const innerContent = document.querySelectorAll(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["b" /* modalContentClassName */]}`)[0];
-  const imageContainer = document.querySelectorAll(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["c" /* modalImageContainerClassName */]}`)[0];
+  const innerContent = document.querySelectorAll(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["c" /* modalContentClassName */]}`)[0];
+  const imageContainer = document.querySelectorAll(`.${__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["d" /* modalImageContainerClassName */]}`)[0];
 
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["g" /* setImageContainerStyle */])(imageContainer, innerContent);
 };
@@ -1006,9 +1028,9 @@ const previous = () => {
 "use strict";
 /* WEBPACK VAR INJECTION */(function(setImmediate) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mount__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__image_factory__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__image_factory__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__button_factory__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__ = __webpack_require__(2);
 
 
 
@@ -1021,7 +1043,7 @@ const previous = () => {
  * @param id
  */
 const open = (id) => {
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["a" /* setActiveImage */])(id);
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["b" /* setActiveImage */])(id);
   const modal = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mount__["b" /* getModalContainer */])();
 
   modal.innerHTML = "";
@@ -1029,20 +1051,14 @@ const open = (id) => {
 
   const innerContent = document.createElement("section");
 
-  innerContent.classList.add(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["b" /* modalContentClassName */]);
+  innerContent.classList.add(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["c" /* modalContentClassName */]);
 
   modal.appendChild(innerContent);
 
   const imageContainer = document.createElement("section");
-  const imageNodes = __WEBPACK_IMPORTED_MODULE_1__api__["b" /* images */].map((img, index) => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__image_factory__["a" /* create */])(img, index, false));
-
-  imageContainer.classList.add(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["c" /* modalImageContainerClassName */]);
-  imageNodes.forEach((imgNode) => {
-    imgNode.setAttribute("style", `width: ${innerContent.clientWidth}px;`);
-    imgNode.classList.add(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["d" /* modalImageClassName */]);
-    imageContainer.appendChild(imgNode);
-  });
+  imageContainer.classList.add(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["d" /* modalImageContainerClassName */]);
   innerContent.appendChild(imageContainer);
+  const imageNodes = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__image_factory__["b" /* createAndAppendImages */])(innerContent, imageContainer, __WEBPACK_IMPORTED_MODULE_1__api__["b" /* images */]);
 
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["e" /* updateInnerContainerSize */])(innerContent, imageNodes[__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["f" /* activeImage */]].clientHeight);
   __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["g" /* setImageContainerStyle */])(imageContainer, innerContent);
@@ -1054,7 +1070,6 @@ const open = (id) => {
 
   const modalBackground = document.createElement("section");
 
-  modalBackground.innerHTML = "";
   modalBackground.classList.add("modal-background");
   modalBackground.onclick = close;
   modal.appendChild(modalBackground);
@@ -1068,26 +1083,35 @@ const open = (id) => {
   /**
    * In reality this should be probably be debounced.
    * */
-  window.onresize = () => {
-    /**
-     * If the animation exists on the container there will
-     * be a terrifying experience. Here we must remove the class
-     * but wait for that to be rendered out before we continue.
-     * */
-    imageContainer.classList.remove('animate');
-    setImmediate(() => {
-      imageNodes.forEach(i => i.setAttribute("style", `width: ${innerContent.clientWidth}px;`));
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["e" /* updateInnerContainerSize */])(innerContent, imageNodes[__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["f" /* activeImage */]].clientHeight);
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["g" /* setImageContainerStyle */])(imageContainer, innerContent);
-      /**
-       * If we don't wait here, it will animate regardless
-       */
-      setImmediate(() => imageContainer.classList.add('animate'));
-    });
-  };
+  window.onresize = resize;
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = open;
 
+
+/**
+ * Resize the modal container and images based on the new screen size
+ */
+const resize = () => {
+  /**
+   * If the animation exists on the container there will
+   * be a terrifying experience. Here we must remove the class
+   * but wait for that to be rendered out before we continue.
+   * */
+  const innerContent = document.querySelector(`.${__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["c" /* modalContentClassName */]}`);
+  const imageContainer = document.querySelector(`.${__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["d" /* modalImageContainerClassName */]}`);
+  const imageNodes = document.querySelectorAll(`.${__WEBPACK_IMPORTED_MODULE_2__image_factory__["c" /* imageClassName */]}`);
+  imageContainer.classList.remove('animate');
+  setImmediate(() => {
+    imageNodes.forEach(imgNode => __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__image_factory__["d" /* updateSize */])(innerContent, imgNode));
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["e" /* updateInnerContainerSize */])(innerContent, imageNodes[__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["f" /* activeImage */]].clientHeight);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__utils_modal_utils__["g" /* setImageContainerStyle */])(imageContainer, innerContent);
+    /**
+     * If we don't wait here, it will animate regardless
+     */
+    setImmediate(() => imageContainer.classList.add('animate'));
+  });
+};
+/* unused harmony export resize */
 
 /**
  * Deactivate the modal.
@@ -1113,8 +1137,8 @@ const close = () => {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_js_mount__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_js_service_selector__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_js_factories_grid_factory__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_js_service_selector__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_js_factories_grid_factory__ = __webpack_require__(3);
 
 
 
