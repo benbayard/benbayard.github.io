@@ -306,39 +306,34 @@ let currentService = __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Flick
 
 const init = () => {
 
-    const selector = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mount__["c" /* getServiceSelector */])();
+  const selector = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__mount__["c" /* getServiceSelector */])();
+  [
+    __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Giphy,
+    __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Google,
+    __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Flickr
+  ].forEach((v) => {
+    const el = document.createElement("option");
 
-    [
-        __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Giphy,
-        __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Google,
-        __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Flickr
-    ].forEach((v) => {
+    el.setAttribute("value", `${v}`);
+    if (v === currentService) {
 
-        const el = document.createElement("option");
+      el.setAttribute("selected", "selected");
 
-        el.setAttribute("value", `${v}`);
-        if (v === currentService) {
-
-            el.setAttribute("selected", "selected");
-
-        }
-        const name = v === __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Giphy
+    }
+    const name = v === __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Giphy
       ? "Giphy"
       : v === __WEBPACK_IMPORTED_MODULE_1__api__["c" /* Service */].Google
         ? "Google"
         : "Flickr";
 
-        el.textContent = name;
-        selector.appendChild(el);
+    el.textContent = name;
+    selector.appendChild(el);
+  });
 
-    });
-
-    selector.onchange = (event) => {
-
-        currentService = parseInt(event.target.value, 10);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__factories_grid_factory__["a" /* fromServiceSelector */])();
-
-    };
+  selector.onchange = (event) => {
+    currentService = parseInt(event.target.value, 10);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__factories_grid_factory__["a" /* fromServiceSelector */])();
+  };
 
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = init;
@@ -383,7 +378,13 @@ const updateSize = (innerContent, imgNode) => {
 
 const createAndAppendImages = (innerContent, imageContainer, images) => {
   return images.map((img, index) => {
-    const imgNode = create(img, index, false);
+    const directImg = create(img, index, false);
+    const imgNode = document.createElement("div");
+    const title = document.createElement("h3");
+    title.classList.add("img-title");
+    title.textContent = img.title;
+    imgNode.appendChild(directImg);
+    imgNode.appendChild(title);
     imgNode.classList.add(imageClassName);
     updateSize(innerContent, imgNode);
     imgNode.classList.add(__WEBPACK_IMPORTED_MODULE_1__utils_modal_utils__["a" /* modalImageClassName */]);

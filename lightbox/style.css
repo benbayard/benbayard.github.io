@@ -209,3 +209,21 @@ button {
   padding: 5px 15px;
   border: 1px solid var(--secondary-color);
 }
+
+.modal-image {
+  width: 100%;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+}
+
+.img-title {
+  position: absolute;
+  top: var(--spacing);
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: white;
+  text-shadow: 0px 0px 1px black;
+  font-size: 1.3rem;
+}
