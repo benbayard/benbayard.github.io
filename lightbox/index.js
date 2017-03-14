@@ -382,14 +382,14 @@ const updateSize = (innerContent, imgNode) => {
 
 
 const createAndAppendImages = (innerContent, imageContainer, images) => {
-  const imageNodes = images.map((img, index) => create(img, index, false));
-  imageNodes.forEach((imgNode) => {
+  return images.map((img, index) => {
+    const imgNode = create(img, index, false);
     imgNode.classList.add(imageClassName);
     updateSize(innerContent, imgNode);
     imgNode.classList.add(__WEBPACK_IMPORTED_MODULE_1__utils_modal_utils__["a" /* modalImageClassName */]);
     imageContainer.appendChild(imgNode);
+    return imgNode;
   });
-  return imageNodes;
 };
 /* harmony export (immutable) */ __webpack_exports__["b"] = createAndAppendImages;
 
