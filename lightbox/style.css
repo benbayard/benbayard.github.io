@@ -85,12 +85,6 @@ button {
     column-count: 2;
   }
 }
-@media (max-width: 640px) {
-  #root-lightbox {
-    -moz-column-count: 1;
-    column-count: 1;
-  }
-}
 
 .image {
   width: 100%;
