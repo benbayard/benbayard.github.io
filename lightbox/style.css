@@ -130,7 +130,6 @@ button {
 }
 
 .active .modal-content {
-  background-color: var(--secondary-color);
   width: 80vw;
   max-width: var(--body-width);
   position: absolute;
@@ -138,6 +137,7 @@ button {
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
   height: 150px;
+  max-height: 95vh;
   overflow-x: hidden;
   transition: height .35s ease-in-out;
   z-index: 10;

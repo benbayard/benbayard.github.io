@@ -931,10 +931,10 @@ const cookDataFormat = ({"data": images}) =>
 
 "use strict";
 const URI = (
-  query = "Puppies",
+  query = "1920x1080 dog",
   key = "AIzaSyBQk73LkIJBLB_O25Ro6q795ks8DWYQAOw",
   context = "001532126640155556502:f9o-ifgnlek"
-) => `https://www.googleapis.com/customsearch/v1?q=${query}&key=${key}&cx=${context}&searchType=image&imgSize=xxlarge`;
+) => `https://www.googleapis.com/customsearch/v1?q=${query}&key=${key}&cx=${context}&searchType=image`;
 /* harmony export (immutable) */ __webpack_exports__["a"] = URI;
 
 
@@ -962,12 +962,27 @@ const create = () => {
 
   nextButton.onclick = next;
   previousButton.onclick = previous;
+  /**
+   * This button advances the carousel
+   */
   nextButton.classList.add("next");
   if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["h" /* isLast */])()) {
+    /**
+     * Hide the next button if it is it
+     *
+     */
     nextButton.classList.add("hide");
   }
+  /**
+   * This button advances the carousel to the
+   * previous image
+   */
   previousButton.classList.add("previous");
   if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__utils_modal_utils__["i" /* isFirst */])()) {
+    /**
+     * Hide the previous button if we are already
+     * on the first image.
+     */
     previousButton.classList.add("hide");
   }
 
@@ -978,6 +993,10 @@ const create = () => {
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = create;
 
+
+/**
+ * Advance the carousel to the next image.
+ */
 const next = () => {
   const previousButton = document.querySelector(".previous");
 
@@ -1000,6 +1019,9 @@ const next = () => {
 /* unused harmony export next */
 
 
+/**
+ * Advance the carousel to the previous image.
+ */
 const previous = () => {
   const nextButton = document.querySelector(".next");
 
